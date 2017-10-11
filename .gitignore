@@ -1,2 +1,6 @@
 # Google App Engine generated folder
 appengine-generated/
+
+# Auth keys contained here
+# If you don't have this locally deployment will fail.
+secret.yaml
