@@ -15,6 +15,9 @@ handlers:
   script: steam_data_processor.php
   login: admin
 
+- url: /ajax_handler.php
+  script: ajax_handler.php
+
 - url: /stylesheets
   static_dir: stylesheets
 

@@ -6,6 +6,8 @@ include 'steam.php';
 
 <html>
     <head>
+        <meta charset="UTF-8">
+
         <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
