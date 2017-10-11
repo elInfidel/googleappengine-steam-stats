@@ -1,5 +1,3 @@
-
-version: 1
 runtime: php55
 api_version: 1
 
@@ -7,11 +5,21 @@ includes:
 - secret.yaml
 
 handlers:
-- url: /.*
+- url: /
+  script: index.php
+
+- url: /index.php
+  script: index.php
+
+- url: /process_steam_data
+  script: steam_data_processor.php
+  login: admin
+
+- url: /stylesheets
   static_dir: stylesheets
 
-- url: /.*
+- url: /javascript
   static_dir: javascript
 
 - url: /.*
-  script: index.php
+  script: not_found.php

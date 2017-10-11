@@ -4,14 +4,32 @@ $json_request = $_REQUEST["type"];
 
 if (isset($json_request) && $json_request !== "") 
 {
-    switch ($i) 
+    /*switch ($i) 
     {
         case "":
-            echo "i is apple";
+            echo "test";
             break;
-    }
+    }*/
     
-    echo "The server is listening! We received: ".$json_request;
+    // Sending a test response
+    echo '{
+        "names": [
+          "Tim",
+          "Bob",
+          "Alice",
+          "John",
+          "Samantha",
+          "Veronica"
+        ],
+        "values": [
+          12,
+          19,
+          3,
+          5,
+          2,
+          30
+        ]
+      }';
 }
 
 ?>

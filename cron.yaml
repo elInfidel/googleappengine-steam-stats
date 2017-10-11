@@ -1,0 +1,4 @@
+cron:
+- description: Steam store data processing
+  url: /process_steam_data
+  schedule: every 30 minutes

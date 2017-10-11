@@ -37,6 +37,7 @@ include 'steam.php';
         ?>
         
         <section id="player_section">
+
             <div id="player_section_image">
                 <img class="status_img" src="<?php echo $accountSummary->avatarfull; ?>" alt="Steam Avatar" style="<?php if($isOnline) echo "border-color: #8FB93B;"; else echo "border-color: #519EBC;"; ?>">
             </div>
@@ -48,8 +49,26 @@ include 'steam.php';
                 <div>Level  <?php echo $level; ?> </div>
                 <div>Friend: <?php echo count($friends); ?> </div>
                 <div>Games: <?php echo $gamesInfo->game_count; ?> </div>
-                <div>Date Created: <?php echo date('d/m/Y', $accountSummary->timecreated); ?> </div> 
+                <div>Date Created: <?php echo date('d/m/Y', $accountSummary->timecreated); ?> </div>
             </div>
+
+            <div id="nav_bar">
+                <h2 class="nav_title">Players</h2>
+                <ul>
+                    <li><a href="">One</a></li>
+                    <li><a href="">Two</a></li>
+                    <li><a href="">Three</a></li>
+                    <li><a href="">Four</a></li>
+                </ul> 
+                <h2 class="nav_title">Games</h2>
+                <ul>
+                    <li><a href="">One</a></li>
+                    <li><a href="">Two</a></li>
+                    <li><a href="">Three</a></li>
+                    <li><a href="">Four</a></li>
+                </ul> 
+            </div>
+
         </section>
 
         <section id="stats_section">
@@ -63,7 +82,7 @@ include 'steam.php';
 
             <h2 id="intro_suggest_input">Input your Steam ID</h2>
 
-            <form action="index.php" method="post">
+            <form action="/index.php" method="post">
             <div><input type="text" name="steam_user" placeholder="Steam ID"></div>
             </form>
 

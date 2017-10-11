@@ -1,13 +1,11 @@
 <?php
     class Steam
     {
-        private $apiKey;
+        private static $apiKey;
         private $steamID;
 
         function __construct($steamID) 
         {
-            $this->apiKey = getenv('STEAM_API_KEY');
-
             // We want to convert vanity URLs to their int64 equivalent
             if(!ctype_digit($steamID))
                 $this->steamID = $this->getSteamIDFromVanityURL($steamID);
@@ -21,7 +19,7 @@
             $obj->vanityurl = $vanityURL;
             $params = json_encode($obj);
 
-            $result = $this->requestStandard("https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/", $params);
+            $result = self::requestStandard("https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/", $params);
             return $result->response->steamid;
         }
 
@@ -31,7 +29,7 @@
             $obj->steamid = $this->steamID;
             $params = json_encode($obj);
 
-            $result = $this->requestStandard("https://api.steampowered.com/ISteamUser/GetFriendList/v1/", $params);
+            $result = self::requestStandard("https://api.steampowered.com/ISteamUser/GetFriendList/v1/", $params);
             return $result->friendslist->friends;
         }
 
@@ -41,7 +39,7 @@
             $obj->steamid = $this->steamID;
             $params = json_encode($obj);
 
-            $result = $this->requestService("https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/", $params);
+            $result = self::requestService("https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/", $params);
             return $result->response->player_level;
         }
 
@@ -51,7 +49,7 @@
             $obj->steamids = $this->steamID;
             $params = json_encode($obj);
 
-            $result = $this->requestStandard("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/", $params);
+            $result = self::requestStandard("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/", $params);
             return $result->response->players[0];
         }
 
@@ -61,7 +59,7 @@
             $obj->steamid = $this->steamID;
             $params = json_encode($obj);
 
-            $result = $this->requestStandard("https://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=", $params);
+            $result = self::requestStandard("https://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=", $params);
             return $result->response->bans[0];
         }
 
@@ -74,26 +72,32 @@
             $params->appids_filter = null;
             $inputJSON = json_encode($params);
 
-            $result = $this->requestService("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/", $inputJSON);
+            $result = self::requestService("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/", $inputJSON);
             return $result->response;
         }
 
         // This api call is heavily limited due to issues with slow downs. 
         // 200 calls per 5 mins and only a single app can be requested at a single time.
         // This is unfortunate because it contains most of the interesting info to my cloud app.
-        public function getGameInfo($appID)
+        public static function getGameInfo($appID)
         {
             // We call web request directly here because the url structure is different to
             // other calls. This API is technically unofficial. It's currently used by
             // Steam Big Picture to access store data.
-            $result = $this->webRequest("http://store.steampowered.com/api/appdetails?appids=".$this->appID);
-            return $result->response;
+            $result = self::webRequest("http://store.steampowered.com/api/appdetails?appids=".$appID);
+            return $result;
         }
 
-        private function requestStandard($url, $params)
+        public static function getSteamGameList()
+        {
+            $result = self::webRequest("https://api.steampowered.com/ISteamApps/GetAppList/v2/");
+            return $result->applist->apps;
+        }
+
+        private static function requestStandard($url, $params)
         {
             // All web api calls use the key argument
-            $finalURL = $url."?"."key=".$this->apiKey."&";
+            $finalURL = $url."?"."key=".self::getAPIKey()."&";
 
             // Add parameters to call
             $array = json_decode($params, true);
@@ -102,25 +106,34 @@
                 $finalURL .= $key."=".$val."&";
             }
 
-            // If we have an & at the end of url we remove. 
+            // If we have an & at the end of url we remove it.
             // & indicates the start of the next parameter, There is none so the call may fail.
             if (substr($finalURL, -1, 1) == '&') $finalURL = substr($finalURL, 0, -1);
 
             // Send the call to steams server and return the result.
-            $result = $this->webRequest($finalURL);
+            $result = self::webRequest($finalURL);
             return $result;
         }
 
-        private function requestService($url, $inputJSON)
+        private static function requestService($url, $inputJSON)
         {
             // Service calls directly take the json object so we can just append it and send.
-            $request = $url."?key=".$this->apiKey."&input_json=".$inputJSON;
-            return $this->webRequest($request);
+            $request = $url."?key=".self::getAPIKey()."&input_json=".$inputJSON;
+            return self::webRequest($request);
         }
 
-        private function webRequest($url)
+        private static function webRequest($url)
         {
             return json_decode(file_get_contents($url));
+        }
+
+        private static function getAPIKey()
+        {
+            // If we haven't obtained the api key yet, retrieve it.
+            if(!isset(self::$apiKey))
+                self::$apiKey = getenv('STEAM_API_KEY');
+
+            return self::$apiKey;
         }
     }
 ?>

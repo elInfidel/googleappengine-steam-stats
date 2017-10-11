@@ -1,3 +1,5 @@
+/* Default stuff */
+
 body {
     background-color: #1B2838;
 }
@@ -14,6 +16,24 @@ h6 {
     margin: 0;
     padding: 0;
     font-size-adjust: 0.5;
+}
+
+p,
+div {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    display: inline;
+}
+
+input {
+    padding: 10px 18px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    font-family: 'Open Sans', sans-serif;
 }
 
 
@@ -44,25 +64,7 @@ h6 {
 }
 
 
-/* End of W3C suggested font sizes*/
-
-p,
-div {
-    font-family: 'Open Sans', sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-form {
-    display: inline;
-}
-
-input {
-    padding: 10px 18px;
-    box-sizing: border-box;
-    border-radius: 2px;
-    font-family: 'Open Sans', sans-serif;
-}
+/* commonly used elements */
 
 .panel {
     background-color: #2A475E;
@@ -74,12 +76,18 @@ input {
     border-width: 6px;
 }
 
+
+/* Page header */
+
 #page_title {
     margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
 }
+
+
+/* Introduction screen styling */
 
 #intro_container {
     width: 400px;
@@ -103,6 +111,9 @@ input {
     margin-top: 10px;
 }
 
+
+/* Left hand side elements*/
+
 #player_section {
     display: table-cell;
     min-width: 160px;
@@ -113,9 +124,37 @@ input {
     float: left;
 }
 
-#player_section_data {
-    float: right;
+#nav_bar {
+    margin-top: 20px;
 }
+
+#nav_bar ul {
+    list-style: none;
+    padding: 10px;
+}
+
+#nav_bar a:link {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+#nav_bar a:visited {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+#nav_bar a:hover {
+    text-decoration: none;
+    color: #B8B8B8;
+}
+
+#nav_bar a:active {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+
+/* Right hand side elements*/
 
 #stats_section {
     display: table-cell;
