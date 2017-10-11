@@ -1,0 +1,17 @@
+
+version: 1
+runtime: php55
+api_version: 1
+
+includes:
+- secret.yaml
+
+handlers:
+- url: /.*
+  static_dir: stylesheets
+
+- url: /.*
+  static_dir: javascript
+
+- url: /.*
+  script: index.php

@@ -1,0 +1,125 @@
+body {
+    background-color: #1B2838;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #FFFFFF;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size-adjust: 0.5;
+}
+
+
+/* W3C suggested font sizes */
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.17em;
+}
+
+h4 {
+    font-size: 1.12em;
+}
+
+h5 {
+    font-size: .83em;
+}
+
+h6 {
+    font-size: .75em;
+}
+
+
+/* End of W3C suggested font sizes*/
+
+p,
+div {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    display: inline;
+}
+
+input {
+    padding: 10px 18px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.panel {
+    background-color: #2A475E;
+    padding: 10px;
+}
+
+.status_img {
+    border-style: solid;
+    border-width: 6px;
+}
+
+#page_title {
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#intro_container {
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#intro_container #suggest_input {
+    padding: 10px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#info_container {
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+#info_container p {
+    margin-top: 10px;
+}
+
+#player_section {
+    display: table-cell;
+    min-width: 160px;
+    padding: 50px;
+}
+
+#player_section_image {
+    float: left;
+}
+
+#player_section_data {
+    float: right;
+}
+
+#stats_section {
+    display: table-cell;
+    width: 100%;
+    padding: 50px;
+    vertical-align: top;
+}
