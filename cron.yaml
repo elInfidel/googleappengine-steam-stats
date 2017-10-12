@@ -1,4 +1,7 @@
 cron:
-- description: Steam store data processing
+- description: Steam store data processing job
   url: /process_steam_data
-  schedule: every 30 minutes
+  schedule: every 60 minutes
+  retry_parameters:
+    min_backoff_seconds: 3.0
+    max_doublings: 3
