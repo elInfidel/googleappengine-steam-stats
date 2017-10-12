@@ -64,7 +64,7 @@
         $pCount = 0;
         foreach ($db->query('SELECT appid FROM app_proc WHERE is_processed = 0') as $row) 
         {
-            if($pCount >= 150) break;
+            if($pCount >= 200) break;
 
             $appid = $row['appid'];
             $game = Steam::getGameInfo($appid)->{$appid};
@@ -94,32 +94,46 @@
                     $stmt = null;
 
                     // genre
-                    if(isset($game_data->genres))
-                    {
-                        $stmt = $db->prepare("
-                        INSERT IGNORE INTO genres (genreid, genre) 
-                        VALUES (:genreid, :genre)");
-                        foreach($game_data->genres as $genre){
-                            $stmt->bindParam(':genreid', $genre->id);
-                            $stmt->bindParam(':genre', $genre->description);
-                            $stmt->execute();
-                        }
-                        $stmt = null;
+                    $stmt = $db->prepare("
+                    INSERT IGNORE INTO genres (genreid, genre) 
+                    VALUES (:genreid, :genre)");
+                    foreach($game_data->genres as $genre){
+                        $stmt->bindParam(':genreid', $genre->id);
+                        $stmt->bindParam(':genre', $genre->description);
+                        $stmt->execute();
                     }
+                    $stmt = null;
+
+                    $stmt = $db->prepare("
+                    INSERT IGNORE INTO game_genres (appid, genreid) 
+                    VALUES (:appid, :genreid)");
+                    foreach($game_data->genres as $genre){
+                        $stmt->bindParam(':appid', $game_data->steam_appid);
+                        $stmt->bindParam(':genreid', $genre->id);
+                        $stmt->execute();
+                    }
+                    $stmt = null;
 
                     // category
-                    if(isset($game_data->categories))
-                    {
-                        $stmt = $db->prepare("
-                        INSERT IGNORE INTO categories (categoryid, category) 
-                        VALUES (:categoryid, :category)");
-                        foreach($game_data->categories as $category){
-                            $stmt->bindParam(':categoryid', $category->id);
-                            $stmt->bindParam(':category', $category->description);
-                            $stmt->execute();
-                        }
-                        $stmt = null;
+                    $stmt = $db->prepare("
+                    INSERT IGNORE INTO categories (categoryid, category) 
+                    VALUES (:categoryid, :category)");
+                    foreach($game_data->categories as $category){
+                        $stmt->bindParam(':categoryid', $category->id);
+                        $stmt->bindParam(':category', $category->description);
+                        $stmt->execute();
                     }
+                    $stmt = null;
+
+                    $stmt = $db->prepare("
+                    INSERT IGNORE INTO game_categories (appid, categoryid) 
+                    VALUES (:appid, :categoryid)");
+                    foreach($game_data->categories as $category){
+                        $stmt->bindParam(':appid', $game_data->steam_appid);
+                        $stmt->bindParam(':categoryid', $category->id);
+                        $stmt->execute();
+                    }
+                    $stmt = null;
                 }
                 catch( PDOException $e ) 
                 {
@@ -136,10 +150,10 @@
         // Update pre-calculated values based on new data.
         // Store the data calculated in google bucket.
         $apps_summary = new stdClass;
-        $apps_summary->appCount = $db->query('SELECT COUNT(appid) FROM app_proc')->fetchColumn();
-        $apps_summary->avgPrice = $db->query('SELECT AVG(price) FROM applications WHERE price > 0')->fetchColumn() * 0.01;
-        $apps_summary->totalPrice = $db->query('SELECT SUM(price) FROM applications WHERE price > 0')->fetchColumn();
-        $apps_summary->freeCount = $db->query('SELECT COUNT(is_free) FROM applications WHERE is_free = 1')->fetchColumn();
+        $apps_summary->app_count = $db->query('SELECT COUNT(appid) FROM app_proc')->fetchColumn();
+        $apps_summary->avg_price = $db->query('SELECT AVG(price) FROM applications WHERE price > 0')->fetchColumn() * 0.01;
+        $apps_summary->total_price = $db->query('SELECT SUM(price) FROM applications WHERE price > 0')->fetchColumn();
+        $apps_summary->num_free_games = $db->query('SELECT COUNT(is_free) FROM applications WHERE is_free = 1')->fetchColumn();
 
         file_put_contents("gs://".getenv('BUCKET_NAME')."/apps_summary.json", json_encode($apps_summary));
 
