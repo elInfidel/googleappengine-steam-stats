@@ -26,6 +26,7 @@ $(document).ready(function() {
             });
         }
     };
-    xmlhttp.open("GET", "ajax_handler.php?type=" + "Hello", true);
+
+    xmlhttp.open("GET", "ajax_handler.php?type=" + "steam_data", true);
     xmlhttp.send();
 });

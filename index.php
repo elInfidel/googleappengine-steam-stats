@@ -64,8 +64,8 @@ include 'steam.php';
                 </ul> 
                 <h2 class="nav_title">Games</h2>
                 <ul>
-                    <li><a href="">One</a></li>
-                    <li><a href="">Two</a></li>
+                    <li><a href="">Genres</a></li>
+                    <li><a href="">Categories</a></li>
                     <li><a href="">Three</a></li>
                     <li><a href="">Four</a></li>
                 </ul> 
