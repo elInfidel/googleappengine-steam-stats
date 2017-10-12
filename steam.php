@@ -94,6 +94,12 @@
             return $result->applist->apps;
         }
 
+        public static function getGameCurPlayers($appID)
+        {
+            $result = self::webRequest("https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=".$appID);
+            return $result->response;
+        }
+
         private static function requestStandard($url, $params)
         {
             // All web api calls use the key argument
