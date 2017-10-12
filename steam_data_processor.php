@@ -37,6 +37,7 @@
         $games = Steam::getSteamGameList();
 
         // Compare apps in list to what we have, adding/removing as required.
+        $newApps = 0;
         foreach($games as $game)
         {
             try 
@@ -88,20 +89,6 @@
                     $stmt->bindParam(':price', $game_data->price_overview->final);
                     $stmt->execute();
                     $stmt = null;
-
-                     // Attempt to add the application to our database.
-                     $stmt = $db->prepare("
-                     INSERT IGNORE INTO applications (appid, type, name, is_free, recommendation_count, achievement_count, price) 
-                     VALUES (:appid, :type, :name, :is_free, :recommendation_count, :achievement_count, :price)");
-                     $stmt->bindParam(':appid', $game_data->steam_appid);
-                     $stmt->bindParam(':type', $game_data->type);
-                     $stmt->bindParam(':name', $game_data->name);
-                     $stmt->bindParam(':is_free', $is_free);
-                     $stmt->bindParam(':recommendation_count', $game_data->recommendations->total);
-                     $stmt->bindParam(':achievement_count', $game_data->achievements->total);
-                     $stmt->bindParam(':price', $game_data->price_overview->final);
-                     $stmt->execute();
-                     $stmt = null;
                 }
                 catch( PDOException $Exception ) 
                 {
@@ -118,6 +105,8 @@
         // Update pre-calculated values based on new data.
         $apps_summary = new stdClass;
         $apps_summary->appCount = $db->query('SELECT COUNT(appid) AS app_count FROM app_proc')->fetchColumn();
+        $apps_summary->avgPrice = $db->query('SELECT AVG(price) AS avg_price FROM applications WHERE price > 0')->fetchColumn();
+        $apps_summary->freeCount = $db->query('SELECT COUNT(is_free) AS avg_price FROM applications')->fetchColumn();
 
         return true;
     }
@@ -181,7 +170,6 @@
             date_last_processed int(11),
             FOREIGN KEY (appid) REFERENCES applications(appid) ON DELETE CASCADE
         );');
-        
     }
 ?>
 
