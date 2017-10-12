@@ -2,6 +2,8 @@
 
 include 'steam.php';
 
+session_start();
+
 ?>
 
 <html>
@@ -26,8 +28,8 @@ include 'steam.php';
     <?php if( isset($_POST["steam_user"])){ ?>
         
         <?php 
-            $steamID = $_POST["steam_user"];
-            $steamAPI = new Steam($steamID);
+            $_SESSION["steam_user"] = $_POST["steam_user"];
+            $steamAPI = new Steam($_SESSION["steam_user"]);
             
             // Here we store a bunch of data related to the entered steam account.
             $accountSummary = $steamAPI->getPlayerSummary();
