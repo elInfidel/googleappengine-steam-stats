@@ -59,17 +59,12 @@ session_start();
             <div id="nav_bar">
                 <h2 class="nav_title">Players</h2>
                 <ul>
-                    <li><a href="">One</a></li>
-                    <li><a href="">Two</a></li>
-                    <li><a href="">Three</a></li>
-                    <li><a href="">Four</a></li>
+                    <li>Coming Soon</li>
                 </ul> 
                 <h2 class="nav_title">Games</h2>
                 <ul>
-                    <li><a href="">Genres</a></li>
-                    <li><a href="">Categories</a></li>
-                    <li><a href="">Three</a></li>
-                    <li><a href="">Four</a></li>
+                    <li><a href="" onclick="displayGenres();return false;">Genres</a></li>
+                    <li><a href=""onclick="displayCategories();return false;">Categories</a></li>
                 </ul> 
             </div>
 
