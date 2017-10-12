@@ -64,7 +64,7 @@
         $pCount = 0;
         foreach ($db->query('SELECT appid FROM app_proc WHERE is_processed = 0') as $row) 
         {
-            if($pCount >= 200) break;
+            if($pCount >= 10) break;
 
             $appid = $row['appid'];
             $game = Steam::getGameInfo($appid)->{$appid};
@@ -154,6 +154,16 @@
         $apps_summary->avg_price = $db->query('SELECT AVG(price) FROM applications WHERE price > 0')->fetchColumn() * 0.01;
         $apps_summary->total_price = $db->query('SELECT SUM(price) FROM applications WHERE price > 0')->fetchColumn();
         $apps_summary->num_free_games = $db->query('SELECT COUNT(is_free) FROM applications WHERE is_free = 1')->fetchColumn();
+
+        foreach ($db->query('SELECT genre, COUNT(*) as total FROM genres NATURAL JOIN game_genres GROUP BY genre') as $row) 
+        {
+           $apps_summary->genres[$row['genre']] = $row['total'];
+        }
+
+        foreach ($db->query('SELECT category, COUNT(*) as total FROM categories NATURAL JOIN game_categories GROUP BY category') as $row) 
+        {
+            $apps_summary->categories[$row['category']] = $row['total'];
+        }
 
         file_put_contents("gs://".getenv('BUCKET_NAME')."/apps_summary.json", json_encode($apps_summary));
 
