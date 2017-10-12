@@ -2,7 +2,7 @@ runtime: php55
 api_version: 1
 
 includes:
-- secret.yaml
+- client_secrets.yaml
 
 handlers:
 - url: /

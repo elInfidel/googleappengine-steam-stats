@@ -3,4 +3,4 @@ appengine-generated/
 
 # Auth keys contained here
 # If you don't have this locally deployment will fail.
-secret.yaml
+client_secrets.yaml
